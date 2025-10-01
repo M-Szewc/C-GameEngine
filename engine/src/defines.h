@@ -16,6 +16,10 @@ typedef signed long long i64;
 typedef float f32;
 typedef double f64;
 
+// boolean
+typedef unsigned int b32;
+typedef unsigned char b8;
+
 // Properly define static assertions
 #if defined(__clang__) || defined(__gcc__)
     #define GE_STATIC_ASSERT _Static_assert
@@ -36,6 +40,9 @@ GE_STATIC_ASSERT(sizeof(i64) == 8, "Expected i64 to be 8 bytes.");
 
 GE_STATIC_ASSERT(sizeof(f32) == 4, "Expected f32 to be 4 bytes.");
 GE_STATIC_ASSERT(sizeof(f64) == 8, "Expected f64 to be 8 bytes.");
+
+GE_STATIC_ASSERT(sizeof(b8) == 1, "Expected b8 to be 1 byte.");
+GE_STATIC_ASSERT(sizeof(b32) == 4, "Expected b32 to be 4 bytes.");
 
 #define true 1
 #define false 0
