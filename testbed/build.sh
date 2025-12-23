@@ -1,0 +1,22 @@
+#!/bin/bash
+# Build script for engine
+set echo on
+
+mkdir -p ../bin
+
+# Get a list of all the .c files.
+cFilenames=$(find . -type f -name "*.c")
+
+# echo "Files:" $cFilenames
+
+assembly="testbed"
+compilerFlags="-g -shared -fdeclspec -fPIC"
+# -fms-extensions
+# -Wall -Werror
+includeFlags="-Isrc -I../engine/src"
+linkerFlags="-L../bin/ -lengine -Wl,-rpath,."
+defines="-D_DEBUG -DGE_IMPORT"
+
+echo "Building $assembly..."
+echo clang $cFilenames $compilerFlags -o ../bin/$assembly $defines $include $linkerFlags
+clang $cFilenames $compilerFlags -o ../bin/lib$assembly $defines $includeFlags $linkerFlags
