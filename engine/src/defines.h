@@ -12,9 +12,13 @@ typedef signed short i16;
 typedef signed int i32;
 typedef signed long long i64;
 
-// floating point types
+// Floating point types
 typedef float f32;
 typedef double f64;
+
+// Boolean types
+typedef int b32;
+typedef _Bool b8;
 
 // Properly define static assertions
 #if defined(__clang__) || defined(__gcc__)
@@ -36,6 +40,9 @@ GE_STATIC_ASSERT(sizeof(i64) == 8, "Expected i64 to be 8 bytes.");
 
 GE_STATIC_ASSERT(sizeof(f32) == 4, "Expected f32 to be 4 bytes.");
 GE_STATIC_ASSERT(sizeof(f64) == 8, "Expected f64 to be 8 bytes.");
+
+GE_STATIC_ASSERT(sizeof(b8) == 1, "Expected b8 to be 1 byte.");
+GE_STATIC_ASSERT(sizeof(b32) == 4, "Expected b32 to be 4 bytes.");
 
 #define true 1
 #define false 0
