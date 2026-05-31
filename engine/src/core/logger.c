@@ -1,41 +1,53 @@
 #include "logger.h"
 #include "asserts.h"
+#include "platform/platform.h"
 
-// TODO: temporary, remove later
+// TODO: remove temporary
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
 
+
 b8 initialize_logging() {
-  // TODO: create log file
-  return true;
+    // TODO: create log file
+    
+    return true;
 }
 
 void shutdown_logging() {
-  // TODO: cleanup logging/write queued entries
+    // TODO: cleanup logging/write queued entries
 }
 
 void log_output(log_level level, const char* message, ...) {
-  const char* level_String[6] = {"[FATAL]: ", "[ERROR]: ", "[WARN]: ", "[INFO]: ", "[DEBUG]: ", "[TRACE]: "};
-  b8 is_error = level < LOG_LEVEL_WARN;
+    const char* level_strings[6] = {"[FATAL]:", "[ERROR]:", "[WARN]:", "[INFO]:", "[DEBUG]:", "[TRACE]:"};
+    b8 is_error = level <= LOG_LEVEL_ERROR;
 
-  // TODO: technical limit of log size
-  char format_buffer[MAX_LOG_MESSAGE_LENGTH];
-  char out_message[MAX_LOG_MESSAGE_LENGTH];
-  memset(format_buffer, 0, sizeof(format_buffer));
-  memset(out_message, 0, sizeof(out_message));
+    // Technically imposes a 32k character limit on a single log entry, but no reasonable log is that long
+    const i32 MAX_MSG_LENGTH = 32000;
+    char out_message[MAX_MSG_LENGTH];
+    platform_zero_memory(out_message, sizeof(out_message));
 
-  __builtin_va_list arg_ptr;
-  va_start(arg_ptr, message);
-  vsnprintf(format_buffer, MAX_LOG_MESSAGE_LENGTH, message ,arg_ptr);
-  va_end(arg_ptr);
+    // Format original message
+    __builtin_va_list arg_ptr;
+    va_start(arg_ptr, message);
+    vsnprintf(out_message, MAX_MSG_LENGTH, message, arg_ptr);
+    va_end(arg_ptr);
 
-  sprintf(out_message, "%s%s\n", level_String[level], format_buffer);
+    char final_message[MAX_MSG_LENGTH];
+    sprintf(final_message, "%s %s\n", level_strings[level], out_message);
 
-  // TODO: platform specific output
-  printf("%s", out_message);
+    // platform-specific output
+    if (is_error) {
+        platform_console_write_error(final_message, level);
+    } else {
+        platform_console_write(final_message, level);
+    }
 }
 
-void report_assertion_failure(const char* expression, const char* message, const char* file, i32 line) {
-  log_output(LOG_LEVEL_FATAL, "Assertion Failure: %s, message: %s, in file: %s, line: %d\n", expression, message, file, line);
+void report_assertion_failure_msg(const char* expression, const char* message, const char* file, i32 line) {
+    log_output(LOG_LEVEL_FATAL, "Assertion Failure: %s, message: %s, in file: %s, line %d\n", expression, message, file, line);
+}
+
+void report_assertion_failure(const char* expression, const char* file, i32 line) {
+    log_output(LOG_LEVEL_FATAL, "Assertion Failure: %s, in file: %s, line %d\n", expression, file, line);
 }

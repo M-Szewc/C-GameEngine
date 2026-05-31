@@ -9,8 +9,8 @@
 
 // Disable debug and trace logging for release builds
 #if GE_RELEASE == 1
-#define LOG_DEBUG_ENABLED 0
-#define LOG_TRACE_ENABLED 0
+  #define LOG_DEBUG_ENABLED 0
+  #define LOG_TRACE_ENABLED 0
 #endif
 
 typedef enum log_level {
@@ -25,50 +25,46 @@ typedef enum log_level {
 b8 initialize_logging();
 void shutdown_logging();
 
-#define MAX_LOG_MESSAGE_LENGTH 32000
-
 GE_API void log_output(log_level level, const char* message, ...);
 
-// Logs a fatal-level message.
-#define GE_FATAL(message, ...) log_output(LOG_LEVEL_FATAL, message, ##__VA_ARGS__)
+#ifndef GE_FATAL
+// Logs a fatal-level message
+    #define GE_FATAL(message, ...) log_output(LOG_LEVEL_FATAL, message, ##__VA_ARGS__)
+#endif
 
 #ifndef GE_ERROR
-  // Logs a error-level message
-  #define GE_ERROR(message, ...) log_output(LOG_LEVEL_ERROR, message, ##__VA_ARGS__)
+// Logs an error-level message
+    #define GE_ERROR(message, ...) log_output(LOG_LEVEL_ERROR, message, ##__VA_ARGS__)
 #endif
 
 #if LOG_WARN_ENABLED == 1
-  #ifndef GE_WARN
-    // Logs a warn-level message
+// Logs a warning-level message
     #define GE_WARN(message, ...) log_output(LOG_LEVEL_WARN, message, ##__VA_ARGS__)
-  #else
+#else
+// Does nothing when LOG_WARN_ENABLED != 1
     #define GE_WARN(message, ...)
-  #endif
 #endif
 
 #if LOG_INFO_ENABLED == 1
-  #ifndef GE_INFO
-    // Logs a info-level message
+// Logs a info-level message
     #define GE_INFO(message, ...) log_output(LOG_LEVEL_INFO, message, ##__VA_ARGS__)
-  #else
+#else
+// Does nothing when LOG_INFO_ENABLED != 1
     #define GE_INFO(message, ...)
-  #endif
 #endif
 
 #if LOG_DEBUG_ENABLED == 1
-  #ifndef GE_DEBUG
-    // Logs a debug-level message
+// Logs a debug-level message
     #define GE_DEBUG(message, ...) log_output(LOG_LEVEL_DEBUG, message, ##__VA_ARGS__)
-  #else
+#else
+// Does nothing when LOG_DEBUG_ENABLED != 1
     #define GE_DEBUG(message, ...)
-  #endif
 #endif
 
 #if LOG_TRACE_ENABLED == 1
-  #ifndef GE_TRACE
-    // Logs a trace-level message
+// Logs a trace-level message
     #define GE_TRACE(message, ...) log_output(LOG_LEVEL_TRACE, message, ##__VA_ARGS__)
-  #else
+#else
+// Does nothing when LOG_TRACE_ENABLED != 1
     #define GE_TRACE(message, ...)
-  #endif
 #endif

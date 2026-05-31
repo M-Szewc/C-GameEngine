@@ -16,9 +16,9 @@ typedef signed long long i64;
 typedef float f32;
 typedef double f64;
 
-// Boolean types
-typedef int b32;
-typedef _Bool b8;
+// boolean
+typedef unsigned int b32;
+typedef unsigned char b8;
 
 // Properly define static assertions
 #if defined(__clang__) || defined(__gcc__)
