@@ -11,7 +11,7 @@
   #include <intrin.h>
   #define debugBreak() __debugbreak()
 #else // TODO: add settings for other IDEs
-  #define debugBreak() __builtin_trap()
+  #define debugBreak() __builtin_debugtrap()
 #endif
 
 GE_API void report_assertion_failure(const char* expression, const char* message, const char* file, i32 line);

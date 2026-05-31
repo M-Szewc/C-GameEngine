@@ -19,4 +19,4 @@ defines="-D_DEBUG -DGE_IMPORT"
 
 echo "Building $assembly..."
 echo clang $cFilenames $compilerFlags -o ../bin/$assembly $defines $include $linkerFlags
-clang $cFilenames $compilerFlags -o ../bin/lib$assembly $defines $includeFlags $linkerFlags
+clang $cFilenames $compilerFlags -o ../bin/$assembly $defines $includeFlags $linkerFlags
