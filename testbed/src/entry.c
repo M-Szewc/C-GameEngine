@@ -2,8 +2,7 @@
 
 #include <entry.h>
 
-// TODO: remove for platform alocation
-#include <stdlib.h>
+#include "core/ge_memory.h"
 
 // Define the function to create a game
 b8 create_game(game* out_game) {
@@ -19,7 +18,7 @@ b8 create_game(game* out_game) {
     out_game->initialize = game_initialize;
     out_game->on_resize = game_on_resize;
     
-    out_game->state = malloc(sizeof(game_state));
+    out_game->state = ge_allocate(sizeof(game_state), MEMORY_TAG_GAME);
 
     return true;
 }
